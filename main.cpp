@@ -68,6 +68,8 @@ int main(int argc, char **argv)
     for (auto &[a, b, c] : segments)
         DrawLineEx(a, b, thickness, c);
     EndTextureMode();
+    segments.clear();
+    segments.shrink_to_fit();
     while (!WindowShouldClose())
     {
         BeginDrawing();
