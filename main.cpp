@@ -19,9 +19,9 @@ vector<int> computeSequence(int n)
 Color hexToRGB(unsigned long hex)
 {
     return Color{
-        (unsigned char)(hex >> 24 & 0xff),
         (unsigned char)(hex >> 16 & 0xff),
         (unsigned char)(hex >> 8 & 0xff),
+        (unsigned char)(hex & 0xff),
         255};
 }
 int main(int argc, char **argv)
@@ -49,8 +49,9 @@ int main(int argc, char **argv)
         Vector2 pos{sw / 4, sh};
         float θ = -M_PI_2;
         vector<int> seq = computeSequence(n);
-        branchesColor.a = (unsigned char)(255 * (rand() % 100) / 100.0f);
-        for (int i = 0; i < seq.size() - 1; i++)
+        int size = seq.size();
+        branchesColor.a = (unsigned char)(255 * size / 350.0f); // max number of steps for n < 100000 is 350 steps
+        for (int i = 0; i < size - 1; i++)
         {
             θ = 2 * seq[i] == seq[i + 1] ? θ + 2 * turn : θ - turn;
             // apply rotation matrix to movement vector and add to pos vector to get newPos
