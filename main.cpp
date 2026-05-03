@@ -3,8 +3,9 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <string>
+#include <cstdlib>
 using namespace std;
-using Segment = pair<Vector2, Vector2>;
+using Segment = tuple<Vector2, Vector2, Color>;
 vector<int> computeSequence(int n)
 {
     vector<int> seq;
@@ -15,10 +16,27 @@ vector<int> computeSequence(int n)
     };
     return seq;
 }
+Color hexToRGB(unsigned long hex)
+{
+    return Color{
+        (unsigned char)(hex >> 24 & 0xff),
+        (unsigned char)(hex >> 16 & 0xff),
+        (unsigned char)(hex >> 8 & 0xff),
+        255};
+}
 int main(int argc, char **argv)
 {
     int branches = 2500;
-    if (argc == 2)
+    float thickness = 1.0f;
+    Color backgroundColor = BLACK;
+    Color branchesColor = WHITE;
+    if (argc >= 5)
+        thickness = stof(argv[4]);
+    if (argc >= 4)
+        branchesColor = hexToRGB(stoul(argv[3], nullptr, 0));
+    if (argc >= 3)
+        backgroundColor = hexToRGB(stoul(argv[2], nullptr, 0));
+    if (argc >= 2)
         branches = stoi(argv[1]);
     float sw = 960, sh = 720;
     float turn = 0.08f;
@@ -31,25 +49,23 @@ int main(int argc, char **argv)
         Vector2 pos{sw / 4, sh};
         float θ = -M_PI_2;
         vector<int> seq = computeSequence(n);
+        branchesColor.a = (unsigned char)(255 * (rand() % 100) / 100.0f);
         for (int i = 0; i < seq.size() - 1; i++)
         {
             θ = 2 * seq[i] == seq[i + 1] ? θ + 2 * turn : θ - turn;
             // apply rotation matrix to movement vector and add to pos vector to get newPos
             Vector2 newPos{pos.x - sinf(θ) * len, pos.y + cosf(θ) * len};
-            segments.emplace_back(pos, newPos);
+            segments.emplace_back(pos, newPos, branchesColor);
             pos = newPos;
         }
     }
-    InitWindow(sw, sh, "Collatz");
+    InitWindow(sw, sh, "Collatz Conjecture Tree");
     while (!WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(BLACK);
-        for (auto &[pos, newPos] : segments)
-        {
-
-            DrawLineV(pos, newPos, WHITE);
-        }
+        ClearBackground(backgroundColor);
+        for (auto &[pos, newPos, color] : segments)
+            DrawLineEx(pos, newPos, thickness, color);
         EndDrawing();
     }
     CloseWindow();
