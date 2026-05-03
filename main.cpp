@@ -2,6 +2,7 @@
 #include <vector>
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <string>
 using namespace std;
 using Segment = pair<Vector2, Vector2>;
 vector<int> computeSequence(int n)
@@ -14,9 +15,11 @@ vector<int> computeSequence(int n)
     };
     return seq;
 }
-int main(void)
+int main(int argc, char **argv)
 {
-    int branches = 2000;
+    int branches = 2500;
+    if (argc == 2)
+        branches = stoi(argv[1]);
     float sw = 960, sh = 720;
     float turn = 0.08f;
     // movement vector represented as <0,-L> where L is line length, to move upwards
