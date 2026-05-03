@@ -3,7 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <string>
-#include <cstdlib>
+#include <algorithm>
 using namespace std;
 using Segment = tuple<Vector2, Vector2, Color>;
 vector<int> computeSequence(int n)
@@ -11,9 +11,10 @@ vector<int> computeSequence(int n)
     vector<int> seq;
     while (n > 1)
     {
-        seq.emplace(seq.begin(), n);
+        seq.push_back(n);
         n = n % 2 == 0 ? n / 2 : (3 * n + 1) / 2;
     };
+    reverse(seq.begin(), seq.end());
     return seq;
 }
 Color hexToRGB(unsigned long hex)
