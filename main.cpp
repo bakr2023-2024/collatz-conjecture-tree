@@ -64,6 +64,7 @@ int main(int argc, char **argv)
         }
     }
     InitWindow(sw, sh, "Collatz Conjecture Tree");
+    SetTraceLogLevel(LOG_NONE);
     RenderTexture2D target = LoadRenderTexture(sw, sh);
     BeginTextureMode(target);
     ClearBackground(backgroundColor);
