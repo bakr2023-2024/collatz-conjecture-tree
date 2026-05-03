@@ -29,10 +29,14 @@ int main(int argc, char **argv)
 {
     int branches = 2500;
     float thickness = 1.0f;
+    // movement vector represented as <0,-L> where L is line length, to move upwards
+    float len = -7.0f;
     Color backgroundColor = BLACK;
     Color branchesColor = WHITE;
+    if (argc >= 6)
+        thickness = stof(argv[5]);
     if (argc >= 5)
-        thickness = stof(argv[4]);
+        len = -stof(argv[4]);
     if (argc >= 4)
         branchesColor = hexToRGB(stoul(argv[3], nullptr, 0));
     if (argc >= 3)
@@ -41,8 +45,6 @@ int main(int argc, char **argv)
         branches = stoi(argv[1]);
     float sw = 960, sh = 720;
     float turn = 0.08f;
-    // movement vector represented as <0,-L> where L is line length, to move upwards
-    float len = -7.0f;
     vector<Segment> segments;
     segments.reserve(10 * branches);
     for (int n = 2; n <= branches; n++)
