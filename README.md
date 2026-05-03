@@ -25,7 +25,7 @@ make main
 ## Usage
 
 ```bash
-./main [branches] [background] [color] [length] [thickness]
+./collatz [branches] [background] [color] [length] [thickness]
 ```
 
 All arguments are optional and positional:
