@@ -2,16 +2,17 @@
 #include <vector>
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <iostream>
 using namespace std;
 vector<int> computeSequence(int n)
 {
     vector<int> seq;
-    seq.push_back(1);
     while (n > 1)
     {
-        seq.push_back(n);
+        seq.emplace(seq.begin(), n);
         n = n % 2 == 0 ? n / 2 : (3 * n + 1) / 2;
     };
+    seq.emplace(seq.begin(), 1);
     return seq;
 }
 int main(void)
@@ -25,11 +26,11 @@ int main(void)
     {
         BeginDrawing();
         ClearBackground(BLACK);
-        for (int n = 2; n <= 2500; n++)
+        for (int n = 5; n <= 2500; n++)
         {
             vector<int> seq = computeSequence(n);
             Vector2 pos{sw / 2, sh / 2};
-            float θ = 0.0f;
+            float θ = -M_PI * 0.6;
             for (int i = 1; i < seq.size() - 1; i++)
             {
                 θ = 2 * seq[i] == seq[i + 1] ? θ + 2 * turn : θ - turn;
