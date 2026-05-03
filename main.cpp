@@ -62,14 +62,23 @@ int main(int argc, char **argv)
         }
     }
     InitWindow(sw, sh, "Collatz Conjecture Tree");
+    RenderTexture2D target = LoadRenderTexture(sw, sh);
+    BeginTextureMode(target);
+    ClearBackground(backgroundColor);
+    for (auto &[a, b, c] : segments)
+        DrawLineEx(a, b, thickness, c);
+    EndTextureMode();
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(backgroundColor);
-        for (auto &[pos, newPos, color] : segments)
-            DrawLineEx(pos, newPos, thickness, color);
+        DrawTextureRec(target.texture,
+                       {0, 0, sw, -sh},
+                       {0, 0},
+                       WHITE);
         EndDrawing();
     }
+    UnloadRenderTexture(target);
     CloseWindow();
     return 0;
 }
